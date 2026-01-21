@@ -200,6 +200,6 @@ function irAWompi() {
         return;
     }
 
-    const linkBase = "https://checkout.wompi.co/l/XXXXXXXX";
+    const linkBase = "https://checkout.wompi.co/l/test_VPOS_1GVlws";
     window.location.href = `${linkBase}?amount-in-cents=${monto}00`;
 }
