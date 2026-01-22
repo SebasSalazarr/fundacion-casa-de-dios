@@ -213,23 +213,17 @@ function irADonar() {
     window.location.href = `${linkBase}?amount-in-cents=${montoSeleccionado}00`;
 }
 
-function mostrarInterno(id, boton) {
 
-    // Ocultar todos los bloques
-    document.querySelectorAll('.bloque-conocer').forEach(div => {
-        div.classList.remove('activo');
-    });
+function abrir(src) {
+    const lightbox = document.getElementById("lightbox");
+    const img = document.getElementById("imgLight");
 
-    // Mostrar el seleccionado
-    document.getElementById(id).classList.add('activo');
+    img.src = src;
+    lightbox.style.display = "flex";
+}
 
-    // Quitar activo de todos los botones
-    document.querySelectorAll('.botones-internos button').forEach(btn => {
-        btn.classList.remove('activo');
-    });
-
-    // Activar el botón actual
-    boton.classList.add('activo');
+function cerrar() {
+    document.getElementById("lightbox").style.display = "none";
 }
 
 /* =========================
