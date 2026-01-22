@@ -747,6 +747,50 @@
                 padding: 25px;
             }
         }
+        /* ================= FIX HERO EN MÓVIL ================= */
+@media (max-width: 768px) {
+
+    .hero-slider {
+        height: 60vh;
+        min-height: 380px;
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .slides {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .slide {
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    /* Evita que se “bajen” las imágenes */
+    .hero-slider::after {
+        inset: 0;
+    }
+
+    /* Texto mejor adaptado */
+    .hero-content {
+        padding: 20px 15px;
+    }
+
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero-content p {
+        font-size: 14px;
+    }
+}
+
 </style>
 
 <body>
