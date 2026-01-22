@@ -57,28 +57,32 @@ function verMas() {
 }
 
 /* =========================
-   MENÚ CONÓCENOS (CORREGIDO)
+   BOTÓN CONOCER MÁS (FUNCIONAL)
 ========================= */
-
-// Al cargar la página, ocultar el menú
-document.addEventListener("DOMContentLoaded", () => {
-    const menu = document.getElementById('menu-conocenos');
-    if (menu) menu.style.display = 'none';
-});
-
 function mostrarConocenos() {
-    const menu = document.getElementById('menu-conocenos');
 
-    if (!menu) return;
+    // Ocultar todas las secciones principales
+    document.querySelectorAll('.seccion').forEach(sec => {
+        sec.style.display = "none";
+    });
 
-    // Alternar mostrar / ocultar
-    if (menu.style.display === "none" || menu.style.display === "") {
-        menu.style.display = "flex";
-    } else {
-        menu.style.display = "none";
-    }
+    // Mostrar Misión como inicio del bloque informativo
+    const mision = document.getElementById("mision");
+    if (mision) mision.style.display = "block";
+
+    // Quitar activo a todos los botones principales
+    document.querySelectorAll('.botones button').forEach(btn => {
+        btn.classList.remove("activo");
+    });
+
+    // Activar visualmente el botón Conocer Más
+    event.target.classList.add("activo");
+
+    // Scroll suave hacia el contenido
+    document.querySelector(".contenido").scrollIntoView({
+        behavior: "smooth"
+    });
 }
-
 /* =========================
    FORMULARIO DONACIÓN
 ========================= */
@@ -192,14 +196,65 @@ elementos.forEach(el => {
 /* =========================
    W O M P I
 ========================= */
-function irAWompi() {
-    const monto = montoInput.value;
 
-    if (!monto || monto < 1000) {
-        alert("Ingresa un monto válido");
-        return;
+function seleccionarMonto(valor) {
+    montoSeleccionado = valor;
+
+    // Quitar activo a todos
+    document.querySelectorAll('.montos-pro button')
+        .forEach(b => b.classList.remove('activo'));
+
+    // Activar el botón seleccionado
+    event.target.classList.add('activo');
+}
+
+function irADonar() {
+    const linkBase = "https://checkout.wompi.co/l/test_VPOS_1GVlws";
+    window.location.href = `${linkBase}?amount-in-cents=${montoSeleccionado}00`;
+}
+
+function mostrarInterno(id, boton) {
+
+    // Ocultar todos los bloques
+    document.querySelectorAll('.bloque-conocer').forEach(div => {
+        div.classList.remove('activo');
+    });
+
+    // Mostrar el seleccionado
+    document.getElementById(id).classList.add('activo');
+
+    // Quitar activo de todos los botones
+    document.querySelectorAll('.botones-internos button').forEach(btn => {
+        btn.classList.remove('activo');
+    });
+
+    // Activar el botón actual
+    boton.classList.add('activo');
+}
+
+/* =========================
+   FRASES ROTATIVAS DONAR (FIX REAL)
+========================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const frasesDonar = document.querySelectorAll(".frases-pro .frase");
+    let indiceDonar = 0;
+
+    if (frasesDonar.length > 0) {
+
+        // Mostrar la primera
+        frasesDonar[indiceDonar].classList.add("activa");
+
+        setInterval(() => {
+            frasesDonar[indiceDonar].classList.remove("activa");
+            indiceDonar = (indiceDonar + 1) % frasesDonar.length;
+            frasesDonar[indiceDonar].classList.add("activa");
+        }, 4500);
     }
 
-    const linkBase = "https://checkout.wompi.co/l/test_VPOS_1GVlws";
-    window.location.href = `${linkBase}?amount-in-cents=${monto}00`;
-}
+});
+
+
+
+
