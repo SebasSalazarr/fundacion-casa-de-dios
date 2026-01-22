@@ -823,6 +823,109 @@
         max-height: 80%;
     }
 }
+/* ================= CARRUSEL GALERÍA ================= */
+.carrusel-contenedor {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.carrusel {
+    display: flex;
+    gap: 20px;
+    transition: transform .5s ease;
+}
+
+.card {
+    min-width: 280px;
+    flex: 0 0 auto;
+}
+
+/* Botones */
+.btn-carrusel {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,.6);
+    color: white;
+    border: none;
+    font-size: 30px;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 20;
+}
+
+.btn-carrusel.izquierda {
+    left: 10px;
+}
+
+.btn-carrusel.derecha {
+    right: 10px;
+}
+
+/* En móvil */
+@media (max-width: 768px) {
+    .card {
+        min-width: 75%;
+    }
+
+    .btn-carrusel {
+        display: none; /* en móvil se desliza con dedo */
+    }
+}
+/* ================= CARRUSEL AUTOMÁTICO ================= */
+.carrusel-contenedor {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.carrusel {
+    display: flex;
+    gap: 20px;
+    transition: transform .6s ease;
+}
+
+.carrusel .card {
+    min-width: 300px;
+    flex: 0 0 auto;
+}
+
+/* En móvil se ve 1 imagen grande */
+@media (max-width: 768px) {
+    .carrusel .card {
+        min-width: 85%;
+    }
+}
+/* ================= CARRUSEL AUTOMÁTICO ================= */
+.carrusel-contenedor {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.carrusel {
+    display: flex;
+    gap: 20px;
+    transition: transform .6s ease;
+}
+
+.carrusel .card {
+    min-width: 300px;
+    flex: 0 0 auto;
+}
+
+/* Móvil */
+@media (max-width: 768px) {
+    .carrusel .card {
+        min-width: 85%;
+    }
+}
+
 
 </style>
 
@@ -906,26 +1009,41 @@
             <div class="contenedor">
                 <h2>Evidencias de Nuestro Trabajo</h2>
 
-                <div class="grid" id="galeria">
-                    <div class="card">
-                        <img src="img/e1.jpeg" onclick="abrir(this.src)">
-                        <p>Entrega de ayudas humanitarias</p>
-                    </div>
-                    <div class="card">
-                        <img src="img/e2.jpeg" onclick="abrir(this.src)">
-                        <p>Jornadas comunitarias</p>
-                    </div>
-                    <div class="card">
-                        <img src="img/e3.jpeg" onclick="abrir(this.src)">
-                        <p>Apoyo a familias vulnerables</p>
-                    </div>
-                </div>
-                <button class="ver-mas" onclick="verMas()" id="btnDonar">Ver más</button>
-            </div>
+<div class="carrusel-contenedor">
+    <div class="carrusel" id="carrusel">
+
+        <div class="card">
+            <img src="img/e1.jpeg" onclick="abrir(this.src)">
+            <p>Entrega de ayudas humanitarias</p>
+        </div>
+
+        <div class="card">
+            <img src="img/e2.jpeg" onclick="abrir(this.src)">
+            <p>Jornadas comunitarias</p>
+        </div>
+
+        <div class="card">
+            <img src="img/e3.jpeg" onclick="abrir(this.src)">
+            <p>Apoyo a familias vulnerables</p>
+        </div>
+
+        <div class="card">
+            <img src="img/e4.jpeg" onclick="abrir(this.src)">
+            <p>Actividades con niños</p>
+        </div>
+
+        <div class="card">
+            <img src="img/e5.jpeg" onclick="abrir(this.src)">
+            <p>Trabajo comunitario</p>
+        </div>
+
+    </div>
+
+</div>
 
         </div>
         <!-- CONOCER MÁS -->
-       <center><div id="conocer" class="seccion botones-internos">
+       <center><div id="conocer" class="seccion ">
     <button onclick="mostrar('mision', this)">Misión</button>
     <button onclick="mostrar('vision', this)">Visión</button>
     <button onclick="mostrar('objetivos', this)">Objetivos</button>

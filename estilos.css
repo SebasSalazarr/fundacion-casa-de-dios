@@ -400,6 +400,27 @@ body::before {
 .historia-card:hover {
     transform: translateY(-8px);
 }
+let indice = 0;
 
+function iniciarCarrusel() {
+    const carrusel = document.getElementById("carrusel");
+    const tarjetas = carrusel.querySelectorAll(".card");
+
+    const ancho = tarjetas[0].offsetWidth + 20; // ancho + espacio
+    const total = tarjetas.length;
+
+    setInterval(() => {
+        indice++;
+
+        if (indice >= total) {
+            indice = 0;
+        }
+
+        carrusel.style.transform = `translateX(-${indice * ancho}px)`;
+    }, 3000); // cada 3 segundos
+}
+
+// Iniciar cuando cargue la página
+window.addEventListener("load", iniciarCarrusel);
 
 
