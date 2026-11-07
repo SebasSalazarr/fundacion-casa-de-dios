@@ -72,6 +72,16 @@ class DonacionTest extends TestCase
         $this->assertStringNotContainsString('secreto_integridad', $url);
     }
 
+    public function test_solo_envia_la_direccion_de_regreso_si_es_publica(): void
+    {
+        $local = $this->post('http://localhost/donar', ['monto' => 5000])->headers->get('Location');
+        $this->assertStringNotContainsString('redirect-url', $local);
+
+        $publica = $this->post('https://fundacion.example/donar', ['monto' => 5000])->headers->get('Location');
+        parse_str(parse_url($publica, PHP_URL_QUERY), $datos);
+        $this->assertStringStartsWith('https://fundacion.example/donar/gracias/FCD-', $datos['redirect-url']);
+    }
+
     public function test_sin_llaves_usa_el_enlace_de_pago_y_no_registra_nada(): void
     {
         config(['services.wompi.public_key' => null]);

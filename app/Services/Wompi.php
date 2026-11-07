@@ -40,14 +40,22 @@ class Wompi
     {
         $centavos = $donacion->monto * 100;
 
-        return self::CHECKOUT.'?'.http_build_query([
+        $regreso = route('donar.gracias', $donacion->referencia);
+
+        return self::CHECKOUT.'?'.http_build_query(array_filter([
             'public-key' => config('services.wompi.public_key'),
             'currency' => self::MONEDA,
             'amount-in-cents' => $centavos,
             'reference' => $donacion->referencia,
             'signature:integrity' => $this->firmaDeIntegridad($donacion->referencia, $centavos),
-            'redirect-url' => route('donar.gracias', $donacion->referencia),
-        ]);
+            // Wompi bloquea con un 403 las direcciones de regreso locales.
+            'redirect-url' => $this->esDireccionLocal($regreso) ? null : $regreso,
+        ]));
+    }
+
+    private function esDireccionLocal(string $url): bool
+    {
+        return in_array(parse_url($url, PHP_URL_HOST), ['localhost', '127.0.0.1'], true);
     }
 
     /**
