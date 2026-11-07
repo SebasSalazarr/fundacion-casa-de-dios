@@ -2,6 +2,9 @@ import { createHash, randomUUID } from 'node:crypto';
 
 const MONTOS = [5000, 10000, 20000, 50000];
 const MONEDA = 'COP';
+const DOMINIO = 'https://fundacionfuentesdeaguaviva.org';
+// El proyecto de Netlify del dominio no tiene llaves; este sí, y firma los pagos.
+const FIRMANTE = 'https://fundacion-casa-de-dios-agua-viva.netlify.app';
 
 // Firma el pago en el servidor para que el secreto de integridad nunca llegue al navegador.
 export default async (peticion) => {
@@ -10,6 +13,10 @@ export default async (peticion) => {
     const monto = Number(url.searchParams.get('monto'));
     const llavePublica = process.env.WOMPI_PUBLIC_KEY;
     const secreto = process.env.WOMPI_INTEGRITY_SECRET;
+
+    if (MONTOS.includes(monto) && (!llavePublica || !secreto) && url.origin !== FIRMANTE) {
+        return Response.redirect(`${FIRMANTE}/donar?monto=${monto}`, 302);
+    }
 
     const motivo = !MONTOS.includes(monto) ? 'monto' : !llavePublica ? 'falta-llave-publica' : !secreto ? 'falta-secreto' : null;
 
@@ -30,7 +37,7 @@ export default async (peticion) => {
 
     // Wompi bloquea con un 403 las direcciones de regreso locales.
     if (!['localhost', '127.0.0.1'].includes(url.hostname)) {
-        pago.searchParams.set('redirect-url', `${url.origin}/gracias/`);
+        pago.searchParams.set('redirect-url', `${DOMINIO}/gracias/`);
     }
 
     return Response.redirect(pago.toString(), 302);
