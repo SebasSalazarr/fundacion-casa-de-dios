@@ -1,58 +1,45 @@
 # Publicar la página
 
-La página actual sigue en Netlify desde `main`. Netlify no ejecuta PHP, así que la versión Laravel necesita otro hosting. No cambies el dominio hasta que la versión nueva funcione en la dirección temporal del hosting.
+La página se publica gratis en Netlify como sitio estático, más una función que firma los pagos de Wompi. Laravel se usa en el computador para generar el sitio; Netlify no lo ejecuta.
 
-## Requisitos del hosting
+## Actualizar el sitio
 
-- PHP 8.3 o superior, con las extensiones que pide Laravel.
-- Base de datos MySQL, PostgreSQL o SQLite persistente.
-- HTTPS y dominio propio.
-- La carpeta pública debe ser `public/`.
-
-## Variables de entorno
+Después de cambiar vistas, estilos o fotos:
 
 ```
-APP_NAME="Fundación Casa de Dios"
-APP_ENV=production
-APP_DEBUG=false
-APP_KEY=            # php artisan key:generate --show
-APP_URL=https://fundacionfuentesdeaguaviva.org
-APP_LOCALE=es
+npm run build
+php artisan sitio:exportar
+```
 
-DB_CONNECTION=      # y los datos de conexión del hosting
+Mientras se use el modo de pruebas de Wompi, agrega `--prueba` para mostrar el aviso. Luego haz commit de la carpeta `sitio/public`.
 
+## Variables en Netlify
+
+Configúralas en el panel de Netlify, en las variables de entorno del sitio. Nunca las subas a Git.
+
+```
 WOMPI_PUBLIC_KEY=
 WOMPI_INTEGRITY_SECRET=
-WOMPI_EVENTS_SECRET=
-```
-
-Nunca publiques estos valores ni los subas a Git.
-
-## Comandos de despliegue
-
-```
-composer install --no-dev --optimize-autoloader
-npm ci
-npm run build
-php artisan migrate --force
-php artisan optimize
 ```
 
 ## Orden de publicación
 
-1. Publica la rama `rediseno-laravel` en la dirección temporal del hosting, con llaves de **prueba**.
-2. En Wompi, modo de pruebas, configura la URL de eventos: `https://DIRECCION/wompi/eventos`.
-3. Haz un pago de prueba y confirma que vuelves a "Gracias" y que la donación queda aprobada.
-4. Haz también un pago rechazado y confirma que queda rechazado.
-5. Agrega el dominio en el hosting y copia los registros DNS que indique.
-6. Cambia esos registros donde se administra el DNS, hoy en Netlify. Baja el TTL antes si es posible.
-7. Cambia a las llaves de **producción** y configura la URL de eventos en el modo real de Wompi: `https://fundacionfuentesdeaguaviva.org/wompi/eventos`.
+1. Agrega en Netlify las llaves de **prueba**.
+2. Abre un pull request de la rama hacia `main` para obtener una vista previa, sin unirlo.
+3. En la vista previa, haz un pago de prueba y confirma que Wompi muestra el monto elegido y que vuelves a `/gracias/`.
+4. Habilita los métodos de pago en el modo producción de Wompi.
+5. Cambia en Netlify a las llaves de **producción**.
+6. Genera el sitio sin `--prueba`, haz commit y sube la rama.
+7. Une la rama a `main`.
 8. Haz un pago real pequeño y confirma que llega a la cuenta de la fundación.
-9. Une la rama a `main` y deja de usar Netlify solo cuando todo funcione.
 
 ## Vuelta atrás
 
-Mientras no borres el sitio de Netlify, basta con devolver los registros DNS para regresar a la página anterior.
+Netlify guarda los despliegues anteriores: desde su panel se puede volver a publicar la versión previa.
+
+## Si algún día hay hosting con PHP
+
+La rama `rediseno-laravel` conserva la versión con base de datos y confirmación automática de pagos. Necesita PHP 8.3 o superior, `APP_ENV=production` y `APP_DEBUG=false`, y además la llave `WOMPI_EVENTS_SECRET`.
 
 ## Pendiente de la fundación
 

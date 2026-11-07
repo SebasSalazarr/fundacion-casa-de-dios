@@ -35,6 +35,8 @@ return [
         'integrity_secret' => env('WOMPI_INTEGRITY_SECRET'),
         'events_secret' => env('WOMPI_EVENTS_SECRET'),
         'montos' => [5000, 10000, 20000, 50000],
+        'estatico' => false,
+        'aviso_prueba' => false,
     ],
 
     'slack' => [

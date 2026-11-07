@@ -1,0 +1,7 @@
+# Netlify publica solo la carpeta sitio/, para no intentar instalar Laravel.
+# La carpeta sitio/public se genera con: php artisan sitio:exportar
+[build]
+  base = "sitio"
+  publish = "public"
+  functions = "functions"
+  command = ""

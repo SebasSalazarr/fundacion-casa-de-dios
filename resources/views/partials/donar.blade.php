@@ -2,10 +2,13 @@
     $montos = config('services.wompi.montos');
     $elegido = 20000;
     $pesos = fn (int $monto) => '$'.number_format($monto, 0, ',', '.');
-    $enPrueba = app(\App\Services\Wompi::class)->enPrueba();
+    $estatico = config('services.wompi.estatico');
+    $enPrueba = $estatico ? config('services.wompi.aviso_prueba') : app(\App\Services\Wompi::class)->enPrueba();
 @endphp
-<form class="donar" id="{{ $id }}" action="{{ route('donar') }}" method="post" data-donar>
-    @csrf
+<form class="donar" id="{{ $id }}" action="{{ $estatico ? '/donar' : route('donar') }}" method="{{ $estatico ? 'get' : 'post' }}" data-donar>
+    @unless ($estatico)
+        @csrf
+    @endunless
     <fieldset>
         <legend>Elige tu aporte</legend>
         <div class="donar__opciones">
