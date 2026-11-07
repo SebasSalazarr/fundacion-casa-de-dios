@@ -11,8 +11,10 @@ export default async (peticion) => {
     const llavePublica = process.env.WOMPI_PUBLIC_KEY;
     const secreto = process.env.WOMPI_INTEGRITY_SECRET;
 
-    if (!MONTOS.includes(monto) || !llavePublica || !secreto) {
-        return Response.redirect(inicio, 302);
+    const motivo = !MONTOS.includes(monto) ? 'monto' : !llavePublica ? 'falta-llave-publica' : !secreto ? 'falta-secreto' : null;
+
+    if (motivo) {
+        return new Response(null, { status: 302, headers: { Location: inicio, 'X-Donar-Motivo': motivo } });
     }
 
     const centavos = monto * 100;
