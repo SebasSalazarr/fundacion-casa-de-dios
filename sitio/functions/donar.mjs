@@ -2,6 +2,9 @@ import { createHash, randomUUID } from 'node:crypto';
 
 const MONTOS = [5000, 10000, 20000, 50000];
 const MONEDA = 'COP';
+// Cámbialo a false cuando Wompi tenga activos los medios de pago en producción.
+const MODO_PRUEBA = true;
+const ENLACE_PRUEBA = 'https://checkout.wompi.co/l/test_VPOS_1GVlws';
 const DOMINIO = 'https://fundacionfuentesdeaguaviva.org';
 // El proyecto de Netlify del dominio no tiene llaves; este sí, y firma los pagos.
 const FIRMANTE = 'https://fundacion-casa-de-dios-agua-viva.netlify.app';
@@ -13,6 +16,10 @@ export default async (peticion) => {
     const monto = Number(url.searchParams.get('monto'));
     const llavePublica = process.env.WOMPI_PUBLIC_KEY;
     const secreto = process.env.WOMPI_INTEGRITY_SECRET;
+
+    if (MODO_PRUEBA && MONTOS.includes(monto)) {
+        return Response.redirect(`${ENLACE_PRUEBA}?amount-in-cents=${monto * 100}`, 302);
+    }
 
     if (MONTOS.includes(monto) && (!llavePublica || !secreto) && url.origin !== FIRMANTE) {
         return Response.redirect(`${FIRMANTE}/donar?monto=${monto}`, 302);
