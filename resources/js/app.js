@@ -1,5 +1,38 @@
 const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+// Al bajar, textos y fotos aparecen una vez, con un pequeño escalonado entre hermanos.
+// Solo se ocultan si este código corre, así que sin JavaScript todo queda visible.
+const REVELAR = [
+    'main section h1', 'main h2', 'main h3', 'main .entrada', 'main .quehacemos__entrada', 'main .foto',
+    'main .lista li', 'main blockquote', 'main .valores dl > div', 'main .mision > div', 'main address',
+    'main .ubicacion__enlaces', 'main iframe', 'main video', 'main .donar', 'main .cierre > div:first-child',
+    'main .resultado > *',
+].join(', ');
+
+if (!sinMovimiento.matches && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('animar');
+
+    const vigia = new IntersectionObserver((entradas) => {
+        entradas.forEach(({ target, isIntersecting }) => {
+            if (isIntersecting) {
+                target.classList.add('visible');
+                vigia.unobserve(target);
+            }
+        });
+    }, { rootMargin: '0px 0px -10% 0px' });
+
+    document.querySelectorAll(REVELAR).forEach((elemento) => {
+        if (elemento.closest('.portada') || elemento.parentElement.closest('.revelar')) {
+            return;
+        }
+
+        const hermanos = [...elemento.parentElement.children].filter((hijo) => hijo.matches(REVELAR));
+        elemento.style.setProperty('--retraso', `${(hermanos.indexOf(elemento) % 6) * 70}ms`);
+        elemento.classList.add('revelar');
+        vigia.observe(elemento);
+    });
+}
+
 // Al cambiar el monto, solo se mueven las cifras que cambian.
 function pintarMonto(salida, texto) {
     const anterior = salida.textContent;

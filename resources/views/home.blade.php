@@ -3,7 +3,11 @@
 @section('contenido')
     <div class="wrap portada">
         <div class="portada__texto">
-            <h1>Fundación cristiana para niños y familias en Turbo, Antioquia</h1>
+            <h1>
+                @foreach (explode(' ', 'Fundación cristiana para niños y familias en Turbo, Antioquia') as $i => $palabra)
+                    <span class="palabra" style="--i: {{ $i }}">{{ $palabra }}</span>
+                @endforeach
+            </h1>
             <p class="portada__entrada">Donde la fe se convierte en alimento, educación y esperanza para quienes más lo necesitan.</p>
             <div class="portada__acciones">
                 <a class="boton" href="#donar">Donar ahora</a>
@@ -43,7 +47,7 @@
             <p class="entrada">La Fundación Casa de Dios Fuente de Agua Viva es una entidad sin ánimo de lucro de Turbo, Antioquia. Trabajamos con niños, adolescentes, jóvenes, familias y comunidades.</p>
         </div>
         <div class="wrap">
-            <figure class="foto foto--ancha">
+            <figure class="foto foto--ancha paralaje">
                 @include('partials.foto', [
                     'id' => 'e59',
                     'sizes' => '(min-width: 1336px) 1240px, 100vw',
@@ -67,14 +71,14 @@
                         <li>Brindar asesoría y capacitaciones en proyectos productivos que faciliten la generación de empleo.</li>
                     </ul>
                 </div>
-                <figure class="foto objetivos__alta">
+                <figure class="foto objetivos__alta paralaje">
                     @include('partials.foto', [
                         'id' => 'e63',
                         'sizes' => '(min-width: 960px) 34vw, 100vw',
                         'alt' => 'Salón con techo de zinc: el equipo prepara comida en una olla mientras niños y madres esperan sentados.',
                     ])
                 </figure>
-                <figure class="foto objetivos__ancha">
+                <figure class="foto objetivos__ancha paralaje">
                     @include('partials.foto', [
                         'id' => 'e66',
                         'sizes' => '(min-width: 960px) 56vw, 100vw',
@@ -166,7 +170,7 @@
             <div class="panel panel--cielo historias">
                 <h2 id="t-historias">Historias que inspiran</h2>
                 <blockquote class="historias__grande">“Gracias a la fundación hoy puedo estudiar y soñar con un mejor futuro.”</blockquote>
-                <figure class="foto historias__foto">
+                <figure class="foto historias__foto paralaje">
                     @include('partials.foto', [
                         'id' => 'e8',
                         'sizes' => '(min-width: 960px) 34vw, 100vw',
